@@ -47,8 +47,14 @@ DATA_PATH = File.dirname(__FILE__) + "/../data/data.csv"
 		n ==1 ? object_array[0] : object_array
 	end
 
-#	def self.first(number)
-	#end
+	def self.last
+		object_array = []
+		csv_table = get_table
+		length = csv_table.length
+		obj = csv_table[length-1]
+		self.create(obj)
+	end
+
 
   private
 	  def self.get_table
