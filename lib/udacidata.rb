@@ -61,6 +61,14 @@ DATA_PATH = File.dirname(__FILE__) + "/../data/data.csv"
 		n == 1 ? object_array[0] : object_array
 	end
 
+	# Class method to find an object by ID
+ 	def self.find(number)
+ 		csv_table = get_table
+ 		tmp = csv_table.select do |row|
+ 			row[:id] == number
+ 		end
+ 		self.create(tmp[0])
+ 	end
 
   private
 	  def self.get_table
