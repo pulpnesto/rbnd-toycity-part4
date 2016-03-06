@@ -47,12 +47,18 @@ DATA_PATH = File.dirname(__FILE__) + "/../data/data.csv"
 		n ==1 ? object_array[0] : object_array
 	end
 
-	def self.last
+	# Class method to return the last n number of objects
+	def self.last(n = 1)
 		object_array = []
 		csv_table = get_table
 		length = csv_table.length
-		obj = csv_table[length-1]
-		self.create(obj)
+		cnt = 0
+		n.times do
+		  obj = csv_table[length-1-cnt]
+		  object_array << self.create(obj)
+		  cnt = cnt + 1
+		end
+		n == 1 ? object_array[0] : object_array
 	end
 
 
