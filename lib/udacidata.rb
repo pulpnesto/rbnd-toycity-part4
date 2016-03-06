@@ -34,12 +34,21 @@ DATA_PATH = File.dirname(__FILE__) + "/../data/data.csv"
     object_array
 	end
 
-	def self.first
+	# Class method to return the first n number of objects
+	def self.first(n = 1)
+		object_array = []
     csv_table = get_table
-		row = csv_table.first
-		row[:name] = row[:product]
-		self.create(row)
+    rows = csv_table.first(n)
+    rows.each do |row|
+			row[:name] = row[:product]
+			object_array << self.create(row)
+		end
+		# If only the first object was requested then return object, else return array of objects
+		n ==1 ? object_array[0] : object_array
 	end
+
+#	def self.first(number)
+	#end
 
   private
 	  def self.get_table
