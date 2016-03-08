@@ -70,6 +70,19 @@ DATA_PATH = File.dirname(__FILE__) + "/../data/data.csv"
  		self.create(tmp[0])
  	end
 
+ 	def self.destroy(number)
+ 		obj = self.find(number)
+ 		csv_table = CSV.table(DATA_PATH)
+ 		csv_table.delete_if do |row|
+ 			row[:id] == number
+ 		end
+
+ 		File.open(DATA_PATH, 'w') do |f|
+ 			f.write(csv_table.to_csv)
+ 		end
+ 		obj
+ 	end
+
   private
 	  def self.get_table
 	    CSV.read(DATA_PATH, {encoding: "UTF-8",headers: true, header_converters: :symbol, converters: :all})
