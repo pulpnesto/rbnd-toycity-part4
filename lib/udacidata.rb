@@ -28,7 +28,6 @@ DATA_PATH = File.dirname(__FILE__) + "/../data/data.csv"
 		object_array = []
     csv_table = get_table
     csv_table.each do |row|
-    	row[:name] = row[:product]
     	object_array << self.create(row)
     end
     object_array
@@ -40,7 +39,6 @@ DATA_PATH = File.dirname(__FILE__) + "/../data/data.csv"
     csv_table = get_table
     rows = csv_table.first(n)
     rows.each do |row|
-			row[:name] = row[:product]
 			object_array << self.create(row)
 		end
 		# If only the first object was requested then return object, else return array of objects
@@ -64,15 +62,15 @@ DATA_PATH = File.dirname(__FILE__) + "/../data/data.csv"
 	# Class method to find an object by ID
  	def self.find(number)
  		csv_table = get_table
- 		tmp = csv_table.select do |row|
+ 		tmp = csv_table.find do |row|
  			row[:id] == number
  		end
- 		self.create(tmp[0])
+ 		self.create(tmp)
  	end
 
  	def self.destroy(number)
  		obj = self.find(number)
- 		csv_table = CSV.table(DATA_PATH)
+		csv_table = get_table
  		csv_table.delete_if do |row|
  			row[:id] == number
  		end
@@ -83,11 +81,28 @@ DATA_PATH = File.dirname(__FILE__) + "/../data/data.csv"
  		obj
  	end
 
+# 	def self.find_by_brand(brand)
+# 		csv_table = get_table
+# 		object = csv_table.find do |row|
+ #			row[:brand] == brand
+# 		end
+# 		self.create(object)
+# 	end
+
+ #	def self.find_by_name(name)
+# 		csv_table = get_table
+# 		object = csv_table.find do |row|
+ #			row[:name] == name
+ #		end
+# 		self.create(object)
+# 	end
+
   private
 	  def self.get_table
-	    CSV.read(DATA_PATH, {encoding: "UTF-8",headers: true, header_converters: :symbol, converters: :all})
+	    csv_table = CSV.read(DATA_PATH, {encoding: "UTF-8",headers: true, header_converters: :symbol, converters: :all})
+	    csv_table.each do |row|
+    		row[:name] = row[:product]
+      end
+      csv_table
 	  end
 end
-
-
-#puts csv.find {|row| row['NAME'] == 'Tom'}
