@@ -81,6 +81,15 @@ DATA_PATH = File.dirname(__FILE__) + "/../data/data.csv"
  		obj
  	end
 
+ 	def self.where(arg)
+ 		object_array = []
+ 		if arg[:brand]
+ 			object_array << self.find_by_brand(arg[:brand])
+ 		elsif arg[:name]
+ 			object_array << self.find_by_name(arg[:name])
+ 		end
+ 		object_array
+ 	end
 # 	def self.find_by_brand(brand)
 # 		csv_table = get_table
 # 		object = csv_table.find do |row|
