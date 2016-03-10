@@ -16,7 +16,7 @@ DATA_PATH = File.dirname(__FILE__) + "/../data/data.csv"
   	if attributes[:id] == nil
   		# Append product data to csv data file.
   		CSV.open(DATA_PATH, "ab") do |csv|
-  			csv << [object.id, object.brand, object.name, object.price]
+  			csv << [object.id, object.brand, object.name, object.price.to_f]
   		end
   	end
   	# Retrun object
@@ -67,7 +67,7 @@ DATA_PATH = File.dirname(__FILE__) + "/../data/data.csv"
     CSV.open(DATA_PATH, "wb") do |csv|
       csv << ["id", "brand", "product", "price"]
       object_array.each do |row|
-      	csv << [row.id, row.brand, row.name, row.price]
+      	csv << [row.id, row.brand, row.name, row.price.to_f]
       end
     end
  		obj
@@ -81,6 +81,26 @@ DATA_PATH = File.dirname(__FILE__) + "/../data/data.csv"
  			object_array << self.find_by_name(arg[:name])
  		end
  		object_array
+ 	end
+
+ 	def update(options = {})
+
+ 		object = Product.destroy(self.id)
+ 		object_array = Product.all
+ 		obj_id = object.id
+ 		obj_brand = options[:brand].nil? ? object.brand : options[:brand]
+ 		obj_name = options[:name].nil? ? object.name : options[:name]
+ 		obj_price = options[:price].nil? ? object.price : options[:price]
+ 		new_product = Product.new(id: obj_id, brand: obj_brand, name: obj_name, price: obj_price)
+ 		object_array.push(new_product)
+ 		object_array.sort! { |x,y| x.id <=> y.id }
+ 		CSV.open(DATA_PATH, "wb") do |csv|
+      csv << ["id", "brand", "product", "price"]
+      object_array.each do |row|
+      	csv << [row.id, row.brand, row.name, row.price.to_f]
+      end
+    end
+  	Product.find(obj_id)
  	end
 
   private
