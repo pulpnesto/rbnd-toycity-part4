@@ -35,49 +35,41 @@ DATA_PATH = File.dirname(__FILE__) + "/../data/data.csv"
 
 	# Class method to return the first n number of objects
 	def self.first(n = 1)
-		object_array = []
-    csv_table = get_table
-    rows = csv_table.first(n)
-    rows.each do |row|
-			object_array << self.create(row)
-		end
+    object_array = self.all
+    first_array = object_array.first(n)
 		# If only the first object was requested then return object, else return array of objects
-		n ==1 ? object_array[0] : object_array
+		n ==1 ? first_array[0] : first_array
 	end
 
 	# Class method to return the last n number of objects
 	def self.last(n = 1)
-		object_array = []
-		csv_table = get_table
-		length = csv_table.length
-		cnt = 0
-		n.times do
-		  obj = csv_table[length-1-cnt]
-		  object_array << self.create(obj)
-		  cnt = cnt + 1
-		end
-		n == 1 ? object_array[0] : object_array
+		object_array = self.all
+    last_array = object_array.last(n)
+		# If only the last object was requested then return object, else return array of objects
+		n ==1 ? last_array[0] : last_array
 	end
 
 	# Class method to find an object by ID
  	def self.find(number)
- 		csv_table = get_table
- 		tmp = csv_table.find do |row|
- 			row[:id] == number
+ 		object_array = self.all
+ 		tmp = object_array.find do |row|
+ 			row.id == number
  		end
- 		self.create(tmp)
  	end
 
  	def self.destroy(number)
  		obj = self.find(number)
-		csv_table = get_table
- 		csv_table.delete_if do |row|
- 			row[:id] == number
+ 		object_array = self.all
+ 		object_array.delete_if do |row|
+ 			row.id == number
  		end
 
- 		File.open(DATA_PATH, 'w') do |f|
- 			f.write(csv_table.to_csv)
- 		end
+    CSV.open(DATA_PATH, "wb") do |csv|
+      csv << ["id", "brand", "product", "price"]
+      object_array.each do |row|
+      	csv << [row.id, row.brand, row.name, row.price]
+      end
+    end
  		obj
  	end
 
@@ -90,8 +82,6 @@ DATA_PATH = File.dirname(__FILE__) + "/../data/data.csv"
  		end
  		object_array
  	end
-
-
 
   private
 	  def self.get_table
