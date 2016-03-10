@@ -90,21 +90,8 @@ DATA_PATH = File.dirname(__FILE__) + "/../data/data.csv"
  		end
  		object_array
  	end
-# 	def self.find_by_brand(brand)
-# 		csv_table = get_table
-# 		object = csv_table.find do |row|
- #			row[:brand] == brand
-# 		end
-# 		self.create(object)
-# 	end
 
- #	def self.find_by_name(name)
-# 		csv_table = get_table
-# 		object = csv_table.find do |row|
- #			row[:name] == name
- #		end
-# 		self.create(object)
-# 	end
+
 
   private
 	  def self.get_table
