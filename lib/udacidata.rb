@@ -74,13 +74,14 @@ DATA_PATH = File.dirname(__FILE__) + "/../data/data.csv"
  	end
 
  	def self.where(arg)
- 		object_array = []
+ 		object_array = self.all
+ 		object_array_filtered = []
  		if arg[:brand]
- 			object_array << self.find_by_brand(arg[:brand])
+ 			object_array_filtered = object_array.select {|row| row.brand == arg[:brand]}
  		elsif arg[:name]
- 			object_array << self.find_by_name(arg[:name])
+ 			object_array_filtered = object_array.select {|row| row.name == arg[:name]}
  		end
- 		object_array
+ 		object_array_filtered
  	end
 
  	def update(options = {})
@@ -102,6 +103,7 @@ DATA_PATH = File.dirname(__FILE__) + "/../data/data.csv"
     end
   	Product.find(obj_id)
  	end
+
 
   private
 	  def self.get_table
