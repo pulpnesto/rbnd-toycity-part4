@@ -15,7 +15,22 @@ module Analyzable
   end
 
   def print_report(object_array)
-  	arg = "Hello"
+  	average = average_price(object_array)
+  	brand_hash = count_by_brand(object_array)
+  	name_hash = count_by_name(object_array)
+  	avg_string = "Average price: #{average.to_s}\n"
+
+  	brand_string = "Inventory by Brand:\n"
+  	brand_hash.each do |k,v|
+  		brand_string = brand_string + "  - #{k}: #{v.to_s} \n"
+  	end
+
+  	name_string = "Inventory by Name:\n"
+  	name_hash.each do |k,v|
+  		name_string = name_string + "  - #{k}: #{v.to_s} \n"
+  	end
+  	avg_string + brand_string + name_string
+
   end
 
 end
