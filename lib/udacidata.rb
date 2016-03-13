@@ -4,6 +4,7 @@ require 'csv'
 
 class Udacidata
 
+# Store path to data.csv as constant
 DATA_PATH = File.dirname(__FILE__) + "/../data/data.csv"
 
 	# Class method to initailize Product as wel as write Product to csv file
@@ -55,6 +56,7 @@ DATA_PATH = File.dirname(__FILE__) + "/../data/data.csv"
  	def self.find(number)
  		object_array = self.all
  		id_array = object_array.map {|obj|obj.id}
+ 		# Raise an error if id doesn't exist
  		if id_array.include? number
 			tmp = object_array.find {|row| row.id == number}
 		else
@@ -63,6 +65,7 @@ DATA_PATH = File.dirname(__FILE__) + "/../data/data.csv"
 
  	end
 
+ 	# Class method to delete Product from CSV and return the Product
  	def self.destroy(number)
  		obj = self.find(number)
  		object_array = self.all
@@ -70,6 +73,7 @@ DATA_PATH = File.dirname(__FILE__) + "/../data/data.csv"
  			row.id == number
  		end
 
+ 		# Write new CSV file without deleted Product
     CSV.open(DATA_PATH, "wb") do |csv|
       csv << ["id", "brand", "product", "price"]
       object_array.each do |row|
@@ -79,6 +83,8 @@ DATA_PATH = File.dirname(__FILE__) + "/../data/data.csv"
  		obj
  	end
 
+ 	# Method to return all of the objects by brand or by name
+ 	# TODO - work on DRYing the conditional
  	def self.where(arg)
  		object_array = self.all
  		object_array_filtered = []
@@ -90,8 +96,8 @@ DATA_PATH = File.dirname(__FILE__) + "/../data/data.csv"
  		object_array_filtered
  	end
 
+ 	# Method to update the value of a Product and write out to CSV
  	def update(options = {})
-
  		object = Product.destroy(self.id)
  		object_array = Product.all
  		obj_id = object.id
@@ -112,8 +118,10 @@ DATA_PATH = File.dirname(__FILE__) + "/../data/data.csv"
 
 
   private
+  	# Method to store the CSV file into a Table
 	  def self.get_table
 	    csv_table = CSV.read(DATA_PATH, {encoding: "UTF-8",headers: true, header_converters: :symbol, converters: :all})
+	    # Loop to fix the mismatch in CSV header "product" and Product variable "name"
 	    csv_table.each do |row|
     		row[:name] = row[:product]
       end

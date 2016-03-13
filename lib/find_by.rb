@@ -1,7 +1,6 @@
 class Module
   def create_finder_methods(*attributes)
-    # Your code goes here!
-    # Hint: Remember attr_reader and class_eval
+  	# Method to create find_by_ methods using meta-programming
     attributes.each do |attribute|
     	self.class_eval("def find_by_#{attribute}(#{attribute});
     	                 object_array = self.all;
@@ -11,5 +10,6 @@ class Module
  												end;")
     end
   end
+  # Create the two find_by_ methods
   self.create_finder_methods("brand","name")
 end
