@@ -36,8 +36,10 @@ DATA_PATH = File.dirname(__FILE__) + "/../data/data.csv"
 	# Class method to return the first n number of objects
 	def self.first(n = 1)
     object_array = self.all
-    first_array = object_array.first(n)
-		# If only the first object was requested then return object, else return array of objects
+    array_length = object_array.length
+   	first_array = object_array.first(n)
+
+   	# If only the first object was requested then return object, else return array of objects
 		n ==1 ? first_array[0] : first_array
 	end
 
@@ -52,9 +54,13 @@ DATA_PATH = File.dirname(__FILE__) + "/../data/data.csv"
 	# Class method to find an object by ID
  	def self.find(number)
  		object_array = self.all
- 		tmp = object_array.find do |row|
- 			row.id == number
+ 		id_array = object_array.map {|obj|obj.id}
+ 		if id_array.include? number
+			tmp = object_array.find {|row| row.id == number}
+		else
+			raise ProductNotFoundError, "ID: #{number} does not exit"
  		end
+
  	end
 
  	def self.destroy(number)
